@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:31:12 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/18 17:50:41 by maroard          ###   ########.fr       */
+/*   Updated: 2026/05/19 16:06:54 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdbool.h>
 # include <pthread.h>
 
-typedef struct s_ctx	t_ctx;
+typedef struct s_ctx		t_ctx;
 
 typedef enum e_scheduler
 {
@@ -47,9 +47,9 @@ typedef struct s_request
 
 typedef struct s_heap
 {
-	t_request		**array;
-	int				size;
 	int				capacity;
+	int				size;
+	t_request		**requests;
 	t_scheduler		scheduler;
 }	t_heap;
 
@@ -61,7 +61,7 @@ typedef struct s_dongle
 	bool			has_owner;
 	int				owner_id;
 	long			cooldown_until;
-	t_heap			waiters;
+	t_heap			request_queue;
 }	t_dongle;
 
 typedef struct s_coder
@@ -80,6 +80,14 @@ typedef struct s_coder
 	t_ctx			*ctx;
 }	t_coder;
 
+typedef struct s_init_state
+{
+	unsigned int	coders_count;
+	unsigned int	dongles_count;
+	bool			stop_mutex_ready;
+	bool			log_mutex_ready;
+}	t_init_state;
+
 typedef struct s_ctx
 {
 	t_config		config;
@@ -90,13 +98,22 @@ typedef struct s_ctx
 	pthread_mutex_t	log_mutex;
 	bool			stop;
 	long			start_time;
+	t_init_state	init_state;
 }	t_ctx;
 
-int		set_config(int argc, char *argv[], t_ctx *ctx);
-void	print_args_error(char *error_message);
-int		print_invalid_arg(char *name, char *expected, char *received);
+int		set_config(int argc, char *argv[], t_config *config);
 bool	is_valid_int(char *arg);
 char	*get_arg_name(int index);
 int		is_time_arg(int index);
+void	print_args_error(char *error_message);
+int		print_invalid_arg(char *name, char *expected, char *received);
+
+int		init_ctx(int argc, char *argv[], t_ctx *ctx);
+int		init_mutex(pthread_mutex_t *mutex);
+int		init_cond(pthread_cond_t *cond);
+void	assign_coder_dongles(t_ctx *ctx, t_coder *coder, unsigned int i);
+void	clean_current_dongle(t_dongle *dongle, int cond_ready);
+
+void	cleanup_ctx(t_ctx *ctx);
 
 #endif

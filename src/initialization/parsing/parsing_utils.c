@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:16:52 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/18 18:19:20 by maroard          ###   ########.fr       */
+/*   Updated: 2026/05/19 15:57:18 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ char	*get_arg_name(int index)
 		return ("number_of_compiles_required");
 	if (index == 7)
 		return ("dongle_cooldown");
+	if (index == 8)
+		return ("scheduler");
 	return ("unknown_argument");
 }
 

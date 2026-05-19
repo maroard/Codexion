@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:19:19 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/18 17:50:17 by maroard          ###   ########.fr       */
+/*   Updated: 2026/05/19 15:57:06 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,15 @@ static int	check_args(char *argv[])
 		if (is_time_arg(i) && atoi(argv[i]) < 1)
 			return (print_invalid_arg(get_arg_name(i),
 					"an integer > 0 milliseconds", argv[i]));
-		i++;
+		++i;
 	}
 	if (strcmp(argv[8], "fifo") && strcmp(argv[8], "edf"))
-		return (print_invalid_arg("scheduler",
+		return (print_invalid_arg(get_arg_name(i),
 				"either \"fifo\" or \"edf\"", argv[8]));
 	return (1);
 }
 
-int	set_config(int argc, char *argv[], t_ctx *ctx)
+int	set_config(int argc, char *argv[], t_config *config)
 {
 	if (argc == 1)
 		return (print_args_error("None arguments were provided"), 0);
@@ -72,6 +72,6 @@ int	set_config(int argc, char *argv[], t_ctx *ctx)
 		return (print_args_error("Too many arguments were provided"), 0);
 	if (!check_args(argv))
 		return (0);
-	ctx->config = get_config(argv);
+	(*config) = get_config(argv);
 	return (1);
 }
