@@ -6,12 +6,18 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:31:12 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/19 16:06:54 by maroard          ###   ########.fr       */
+/*   Updated: 2026/05/21 18:15:20 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CODEXION_H
 # define CODEXION_H
+
+# define MSG_TAKEN_DONGLE "has taken a dongle"
+# define MSG_COMPILING "is compiling"
+# define MSG_DEBUGGING "is debugging"
+# define MSG_REFACTORING "is refactoring"
+# define MSG_BURNED_OUT "burned out"
 
 # include <stdbool.h>
 # include <pthread.h>
@@ -115,5 +121,12 @@ void	assign_coder_dongles(t_ctx *ctx, t_coder *coder, unsigned int i);
 void	clean_current_dongle(t_dongle *dongle, int cond_ready);
 
 void	cleanup_ctx(t_ctx *ctx);
+
+long	get_time_ms(void);
+long	get_elapsed_ms(t_ctx *ctx);
+int		smart_sleep(t_ctx *ctx, long duration_ms);
+
+bool    ctx_should_stop(t_ctx *ctx);
+void    ctx_set_stop(t_ctx *ctx);
 
 #endif

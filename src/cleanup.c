@@ -6,14 +6,14 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 16:01:35 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/19 16:05:02 by maroard          ###   ########.fr       */
+/*   Updated: 2026/05/20 14:17:49 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 #include <stdlib.h>
 
-static void cleanup_heap(t_heap *heap)
+static void	cleanup_heap(t_heap *heap)
 {
 	if (!heap)
 		return ;
@@ -23,7 +23,7 @@ static void cleanup_heap(t_heap *heap)
 	heap->capacity = 0;
 }
 
-static void cleanup_dongles(t_ctx *ctx)
+static void	cleanup_dongles(t_ctx *ctx)
 {
 	unsigned int	i;
 	t_dongle		*current;

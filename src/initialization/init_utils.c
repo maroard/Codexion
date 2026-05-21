@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 13:20:00 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/19 15:21:35 by maroard          ###   ########.fr       */
+/*   Updated: 2026/05/20 14:17:24 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ int	init_cond(pthread_cond_t *cond)
 void	assign_coder_dongles(t_ctx *ctx, t_coder *coder, unsigned int i)
 {
 	coder->left_dongle = &ctx->dongles[i];
-	coder->right_dongle = &ctx->dongles[(i + 1)
-		% ctx->config.number_of_coders];
+	coder->right_dongle = &ctx->dongles[(i + 1) % ctx->config.number_of_coders];
 	if (coder->left_dongle->id < coder->right_dongle->id)
 	{
 		coder->first_dongle = coder->left_dongle;
