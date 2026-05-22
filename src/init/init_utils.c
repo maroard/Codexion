@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 13:20:00 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/20 14:17:24 by maroard          ###   ########.fr       */
+/*   Updated: 2026/05/22 22:32:59 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	assign_coder_dongles(t_ctx *ctx, t_coder *coder, unsigned int i)
 	}
 }
 
-void	clean_current_dongle(t_dongle *dongle, int cond_ready)
+void	clean_current_dongle(t_dongle *dongle, bool cond_ready)
 {
 	if (cond_ready)
 		pthread_cond_destroy(&dongle->cond);

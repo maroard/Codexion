@@ -14,7 +14,6 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-
 long	get_time_ms(void)
 {
 	struct timeval	tv;
@@ -39,6 +38,5 @@ int	smart_sleep(t_ctx *ctx, long duration_ms)
 			return (1);
 		usleep(500);
 	}
-
 	return (0);
 }

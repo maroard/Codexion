@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:31:12 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/21 18:15:20 by maroard          ###   ########.fr       */
+/*   Updated: 2026/05/22 23:36:31 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <stdbool.h>
 # include <pthread.h>
 
-typedef struct s_ctx		t_ctx;
+typedef struct s_ctx	t_ctx;
 
 typedef enum e_scheduler
 {
@@ -48,7 +48,7 @@ typedef struct s_request
 	int		dongle_id;
 	long	arrival_time;
 	long	deadline;
-	bool	active;
+	bool	is_active;
 }	t_request;
 
 typedef struct s_heap
@@ -107,26 +107,56 @@ typedef struct s_ctx
 	t_init_state	init_state;
 }	t_ctx;
 
-int		set_config(int argc, char *argv[], t_config *config);
-bool	is_valid_int(char *arg);
-char	*get_arg_name(int index);
-int		is_time_arg(int index);
-void	print_args_error(char *error_message);
-int		print_invalid_arg(char *name, char *expected, char *received);
+int			set_config(int argc, char *argv[], t_config *config);
+bool		is_valid_int(char *arg);
+char		*get_arg_name(int index);
+int			is_time_arg(int index);
+void		print_args_error(char *error_message);
+int			print_invalid_arg(char *name, char *expected, char *received);
 
-int		init_ctx(int argc, char *argv[], t_ctx *ctx);
-int		init_mutex(pthread_mutex_t *mutex);
-int		init_cond(pthread_cond_t *cond);
-void	assign_coder_dongles(t_ctx *ctx, t_coder *coder, unsigned int i);
-void	clean_current_dongle(t_dongle *dongle, int cond_ready);
+int			init_ctx(int argc, char *argv[], t_ctx *ctx);
+int			init_mutex(pthread_mutex_t *mutex);
+int			init_cond(pthread_cond_t *cond);
+void		assign_coder_dongles(t_ctx *ctx, t_coder *coder, unsigned int i);
+void		clean_current_dongle(t_dongle *dongle, bool cond_ready);
 
-void	cleanup_ctx(t_ctx *ctx);
+void		cleanup_ctx(t_ctx *ctx);
 
-long	get_time_ms(void);
-long	get_elapsed_ms(t_ctx *ctx);
-int		smart_sleep(t_ctx *ctx, long duration_ms);
+long		get_time_ms(void);
+long		get_elapsed_ms(t_ctx *ctx);
+int			smart_sleep(t_ctx *ctx, long duration_ms);
 
-bool    ctx_should_stop(t_ctx *ctx);
-void    ctx_set_stop(t_ctx *ctx);
+int 		create_thread(pthread_t *thread, void *routine, void *arg);
+int			join_thread(pthread_t thread);
+
+bool		ctx_should_stop(t_ctx *ctx);
+void		ctx_set_stop(t_ctx *ctx);
+
+int			heap_push(t_heap *heap, t_request *request);
+t_request	*heap_peek(t_heap *heap);
+t_request	*heap_pop(t_heap *heap);
+bool		heap_is_empty(t_heap *heap);
+
+t_request	*highest_priority_request(
+				t_scheduler scheduler, t_request *a, t_request *b);
+void		swap_requests(t_request **a, t_request **b);
+void		heap_sift_up(t_heap *heap);
+void		heap_sift_down(t_heap *heap);
+
+void		log_event(t_ctx *ctx, int coder_id, char *message);
+
+int			request_dongle(
+				t_ctx *ctx, t_coder *coder,
+				t_dongle *dongle, t_request *request);
+void		release_dongle(t_ctx *ctx, t_dongle *dongle);
+
+void		*coder_routine(void *arg);
+
+void		*monitor_routine(void *arg);
+
+int			start_threads(t_ctx *ctx);
+int			join_threads(t_ctx *ctx);
+
+void		wake_all_dongles(t_ctx *ctx);
 
 #endif

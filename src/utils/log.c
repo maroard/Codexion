@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   codexion.c                                         :+:      :+:    :+:   */
+/*   log.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/19 13:20:00 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/19 16:07:57 by maroard          ###   ########.fr       */
+/*   Created: 2026/05/21 18:05:52 by maroard           #+#    #+#             */
+/*   Updated: 2026/05/22 19:24:15 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../codexion.h"
+#include "codexion.h"
 #include <string.h>
 #include <stdio.h>
 
-int	main(int argc, char *argv[])
+void	log_event(t_ctx *ctx, int coder_id, char *message)
 {
-	t_ctx	ctx;
-
-	if (!init_ctx(argc, argv, &ctx))
-		return (-1);
-	cleanup_ctx(&ctx);
-	return (0);
+	pthread_mutex_lock(&ctx->log_mutex);
+	if (strcmp(message, MSG_BURNED_OUT) && ctx_should_stop(ctx))
+	{
+		pthread_mutex_unlock(&ctx->log_mutex);
+		return ;
+	}
+	printf("%ld %d %s\n", get_elapsed_ms(ctx), coder_id, message);
+	pthread_mutex_unlock(&ctx->log_mutex);
 }

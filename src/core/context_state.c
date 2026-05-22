@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   state.c                                            :+:      :+:    :+:   */
+/*   context_state.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/21 17:47:40 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/21 18:04:11 by maroard          ###   ########.fr       */
+/*   Updated: 2026/05/22 18:33:06 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ bool	ctx_should_stop(t_ctx *ctx)
 	return (should_stop);
 }
 
-void    ctx_set_stop(t_ctx *ctx)
+void	ctx_set_stop(t_ctx *ctx)
 {
-    pthread_mutex_lock(&ctx->stop_mutex);
-    ctx->stop = true;
-    pthread_mutex_unlock(&ctx->stop_mutex);
+	pthread_mutex_lock(&ctx->stop_mutex);
+	ctx->stop = true;
+	pthread_mutex_unlock(&ctx->stop_mutex);
 }

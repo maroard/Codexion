@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 13:20:00 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/19 15:56:56 by maroard          ###   ########.fr       */
+/*   Updated: 2026/05/22 19:58:27 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ static int	init_dongles(t_ctx *ctx)
 		if (!init_mutex(&current->mutex))
 			return (0);
 		if (!init_cond(&current->cond))
-			return (clean_current_dongle(current, 0), 0);
+			return (clean_current_dongle(current, false), 0);
 		if (!init_heap(ctx->config, &current->request_queue))
-			return (clean_current_dongle(current, 1), 0);
+			return (clean_current_dongle(current, true), 0);
 		++ctx->init_state.dongles_count;
 		++i;
 	}
