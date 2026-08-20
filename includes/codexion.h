@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 15:31:12 by maroard           #+#    #+#             */
-/*   Updated: 2026/08/20 15:05:16 by maroard          ###   ########.fr       */
+/*   Updated: 2026/08/20 15:13:27 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,8 @@ void		swap_requests(t_request **a, t_request **b);
 void		heap_sift_up(t_heap *heap);
 void		heap_sift_down(t_heap *heap);
 
-int			create_thread(pthread_t *thread, void *routine, void *arg);
+int			create_thread(
+				pthread_t *thread, void *(*routine)(void *), void *arg);
 int			join_thread(pthread_t thread);
 long		get_time_ms(void);
 long		get_elapsed_ms(t_ctx *ctx);
