@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 22:38:47 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/22 23:51:16 by maroard          ###   ########.fr       */
+/*   Updated: 2026/06/11 11:41:27 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	start_threads(t_ctx *ctx)
 	while ((int)i < ctx->config.number_of_coders)
 	{
 		if (!create_thread(
-			&ctx->coders[i].thread, coder_routine, &ctx->coders[i]
-		))
+				&ctx->coders[i].thread, coder_routine, &ctx->coders[i])
+		)
 			return (abort_simulation_start(ctx, coder_threads_created), 0);
 		++coder_threads_created;
 		++i;

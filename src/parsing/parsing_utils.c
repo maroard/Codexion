@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:16:52 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/19 15:57:18 by maroard          ###   ########.fr       */
+/*   Updated: 2026/06/11 14:49:43 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*get_arg_name(int index)
 	return ("unknown_argument");
 }
 
-int	is_time_arg(int index)
+bool	is_time_arg(int index)
 {
 	return (index == 2 || index == 3 || index == 4 || index == 5);
 }

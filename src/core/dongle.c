@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 16:07:53 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/22 18:45:29 by maroard          ###   ########.fr       */
+/*   Updated: 2026/06/11 13:34:04 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,9 @@ static void	prepare_request(
 {
 	request->coder_id = coder->id;
 	request->dongle_id = dongle->id;
-	request->arrival_time = get_elapsed_ms(ctx);
 	pthread_mutex_lock(&coder->mutex);
 	request->deadline = coder->last_compile_start + ctx->config.time_to_burnout;
 	pthread_mutex_unlock(&coder->mutex);
-	request->is_active = true;
 }
 
 int	request_dongle(
@@ -64,18 +62,15 @@ int	request_dongle(
 {
 	prepare_request(ctx, coder, dongle, request);
 	pthread_mutex_lock(&dongle->mutex);
+	request->arrival_order = dongle->next_arrival_order;
+	++dongle->next_arrival_order;
 	if (!heap_push(&dongle->request_queue, request))
 		return (pthread_mutex_unlock(&dongle->mutex), 0);
 	if (!wait_until_pickable(ctx, dongle, request))
-	{
-		request->is_active = false;
-		pthread_mutex_unlock(&dongle->mutex);
-		return (0);
-	}
+		return (pthread_mutex_unlock(&dongle->mutex), 0);
 	heap_pop(&dongle->request_queue);
 	dongle->has_owner = true;
 	dongle->owner_id = coder->id;
-	request->is_active = false;
 	pthread_mutex_unlock(&dongle->mutex);
 	log_event(ctx, coder->id, MSG_TAKEN_DONGLE);
 	return (1);

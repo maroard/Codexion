@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 18:16:47 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/22 22:03:29 by maroard          ###   ########.fr       */
+/*   Updated: 2026/08/20 14:44:38 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,24 @@ static int	debugging_phase(t_coder *coder)
 
 static int	compiling_phase(t_coder *coder)
 {
+	long	now;
+
+	pthread_mutex_lock(&coder->mutex);
+	now = get_elapsed_ms(coder->ctx);
+	if (now - coder->last_compile_start
+		>= coder->ctx->config.time_to_burnout)
+	{
+		pthread_mutex_unlock(&coder->mutex);
+		return (0);
+	}
+	coder->last_compile_start = now;
+	pthread_mutex_unlock(&coder->mutex);
 	log_event(coder->ctx, coder->id, MSG_COMPILING);
 	if (!smart_sleep(coder->ctx, coder->ctx->config.time_to_compile))
 		return (0);
+	pthread_mutex_lock(&coder->mutex);
+	++coder->compile_count;
+	pthread_mutex_unlock(&coder->mutex);
 	return (1);
 }
 
@@ -48,10 +63,6 @@ static int	cycle(t_coder *coder)
 		)
 	)
 		return (release_dongle(coder->ctx, coder->first_dongle), 0);
-	pthread_mutex_lock(&coder->mutex);
-	coder->last_compile_start = get_elapsed_ms(coder->ctx);
-	++coder->compile_count;
-	pthread_mutex_unlock(&coder->mutex);
 	if (!compiling_phase(coder))
 	{
 		release_dongle(coder->ctx, coder->first_dongle);
@@ -75,7 +86,7 @@ void	*coder_routine(void *arg)
 		if (coder->first_dongle == coder->second_dongle)
 		{
 			smart_sleep(coder->ctx, coder->ctx->config.time_to_burnout);
-			return(NULL);
+			return (NULL);
 		}
 		pthread_mutex_lock(&coder->mutex);
 		if (

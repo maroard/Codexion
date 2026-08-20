@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 11:58:28 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/22 16:05:31 by maroard          ###   ########.fr       */
+/*   Updated: 2026/08/20 14:59:58 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ t_request	*highest_priority_request(
 {
 	if (scheduler == FIFO)
 	{
-		if (a->arrival_time < b->arrival_time
-			|| (a->arrival_time == b->arrival_time
-				&& a->coder_id < b->coder_id))
+		if (a->arrival_order < b->arrival_order)
 			return (a);
 		return (b);
 	}
@@ -27,10 +25,7 @@ t_request	*highest_priority_request(
 	{
 		if (a->deadline < b->deadline
 			|| (a->deadline == b->deadline
-				&& a->arrival_time < b->arrival_time)
-			|| (a->deadline == b->deadline
-				&& a->arrival_time == b->arrival_time
-				&& a->coder_id < b->coder_id))
+				&& a->arrival_order < b->arrival_order))
 			return (a);
 		return (b);
 	}

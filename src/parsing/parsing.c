@@ -6,7 +6,7 @@
 /*   By: maroard <maroard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 16:19:19 by maroard           #+#    #+#             */
-/*   Updated: 2026/05/19 15:57:06 by maroard          ###   ########.fr       */
+/*   Updated: 2026/08/20 14:38:08 by maroard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	check_args(char *argv[])
 int	set_config(int argc, char *argv[], t_config *config)
 {
 	if (argc == 1)
-		return (print_args_error("None arguments were provided"), 0);
+		return (print_args_error("None argument were provided"), 0);
 	if (argc < 9)
 		return (print_args_error("Not enough arguments were provided"), 0);
 	if (argc > 9)

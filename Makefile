@@ -6,14 +6,13 @@
 #    By: maroard <maroard@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/12/01 11:16:55 by maroard           #+#    #+#              #
-#    Updated: 2026/05/18 10:34:37 by maroard          ###   ########.fr        #
+#    Updated: 2026/08/20 14:12:01 by maroard          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-AR			= ar rcs
 NAME		= codexion
-CC			= gcc
-CFLAGS		= -I. -Wall -Wextra -Werror -pthread -g
+CC			= cc
+CFLAGS		= -Iincludes -Wall -Wextra -Werror -pthread
 RM			= rm -f
 
 SRC_DIR		= src
@@ -25,7 +24,7 @@ OBJ_FILES	= $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
 all: $(NAME)
 
 $(NAME): $(OBJ_FILES)
-	$(CC) $(OBJ_FILES) -lm -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ_FILES) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	mkdir -p $(dir $@)
